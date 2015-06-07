@@ -186,6 +186,34 @@ module Spec
       "expected: value #{@actual.inspect}\nto not include: #{@expected.inspect}"
     end
   end
+
+  # :nodoc:
+  class GenericBeMatcher
+    def initialize(matcher_name : Symbol)
+      matcher_string = matcher_name.to_s
+      if matcher_string =~ /be_/
+        @method_name = matcher_string[3..-1] + '?'
+        puts @method_name
+      end
+    end
+
+    def match(actual)
+      if actual.responds_to?(@method_name)
+        result = actual.send @method_name
+        result == true
+      else
+        raise
+      end
+    end
+
+    def failure_message
+      "expected: #{@value.inspect} to be truthy"
+    end
+
+    def negative_failure_message
+      "expected: #{@value.inspect} not to be truthy"
+    end
+  end
 end
 
 def eq(value)
@@ -275,6 +303,12 @@ macro expect_raises(klass, message)
       end
     end
   end
+end
+
+macro method_missing(name, args, block)
+  puts 'method missing'
+  p name
+  GenericBeMatcher.new
 end
 
 class Object

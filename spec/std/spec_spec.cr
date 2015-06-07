@@ -77,6 +77,16 @@ describe "Spec matchers" do
     end
   end
 
+  describe "generic be_* matcher" do
+    it "works with Array#empty?" do
+      ([] of Int32).should be_empty
+    end
+
+    it "works with Int#even?" do
+      2.should be_even
+    end
+  end
+
   context "should work as describe" do
     it "is true" do
       true.should be_truthy
