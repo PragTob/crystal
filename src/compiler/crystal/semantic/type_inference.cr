@@ -676,6 +676,18 @@ module Crystal
     end
 
     def bind_block_args_to_yield_exps(block, node)
+      puts block.args
+      if (node.exps.size == 1)
+        my = node.exps.first
+        puts my
+        puts my.type
+        if Crystal::TupleInstanceType == my.type
+          puts "yyyyaaayyyY!!!!"
+        end
+        puts my.type.class
+        puts my.class
+        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      end
       block.args.each_with_index do |arg, i|
         arg.bind_to(node.exps[i]? || mod.nil_var)
       end

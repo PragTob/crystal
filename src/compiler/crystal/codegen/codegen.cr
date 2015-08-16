@@ -1037,6 +1037,18 @@ module Crystal
         node.exps.each_with_index do |exp, i|
           accept exp
 
+          # puts block.args
+          # puts block_context.vars.class
+          # puts "----------------------"
+          # # multi assignment hack
+          # if block.args.size == 1
+          #   first_arg = block.args.first
+          #   if first_arg.is_a?(Array(Crystal::Var+))# | Tuple(Crystal::Var+))
+          #     puts "switching"
+          #     block.args = first_arg
+          #   end
+          # end
+
           if arg = block.args[i]?
             block_var = block_context.vars[arg.name]
             assign block_var.pointer, block_var.type, exp.type, @last
